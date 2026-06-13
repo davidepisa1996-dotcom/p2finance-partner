@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2Finance — Area Partner</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg-0:#0a0612;--bg-1:#13091f;--bg-2:#1a0e2b;--surface:#1d1230;--surface-2:#251539;--surface-3:#2e1a47;--border:rgba(255,255,255,.08);--border-hover:rgba(255,255,255,.16);--text:#f5f0ff;--text-dim:#a89cc4;--text-faint:#6c5f8a;--pink:#ff2e94;--pink-glow:rgba(255,46,148,.4);--purple:#7c3aed;--magenta:#d946ef;--green:#10b981;--gold:#f59e0b;--red:#ef4444;--grad-brand:linear-gradient(135deg,#ff2e94 0%,#d946ef 50%,#7c3aed 100%);--grad-card:linear-gradient(135deg,rgba(124,58,237,.06) 0%,rgba(255,46,148,.04) 100%);--shadow-md:0 4px 12px rgba(0,0,0,.5);--shadow-lg:0 12px 32px rgba(0,0,0,.6),0 0 60px rgba(124,58,237,.12);--radius-md:12px;--radius-lg:18px;--radius-xl:24px;--tap:44px}html,body{height:100%;overflow-x:hidden}body{font-family:'Inter','DM Sans',-apple-system,sans-serif;background:radial-gradient(ellipse at top,#1a0e2b 0%,#0a0612 60%);background-attachment:fixed;color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}#splash{position:fixed;inset:0;background:var(--bg-0);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s}#splash.hide{opacity:0;pointer-events:none}.splash-logo{font-size:48px;font-weight:900;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.04em;font-family:'Syne','Inter',sans-serif}#auth-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:24px 16px}.auth-box{width:100%;max-width:440px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:40px 32px;box-shadow:var(--shadow-lg)}.auth-logo{font-size:32px;font-weight:900;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;font-family:'Syne','Inter',sans-serif}.auth-sub{color:var(--text-dim);text-align:center;margin-top:8px;font-size:14px}.auth-tabs{display:flex;gap:4px;margin:28px 0 24px;padding:4px;background:var(--bg-1);border-radius:var(--radius-md)}.auth-tab{flex:1;padding:11px;background:transparent;border:0;color:var(--text-dim);font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;font-family:inherit;min-height:var(--tap)}.auth-tab.active{background:var(--surface-3);color:var(--text)}.auth-btn{width:100%;background:var(--grad-brand);border:0;color:#fff;padding:14px;border-radius:var(--radius-md);font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;min-height:var(--tap);box-shadow:0 4px 16px var(--pink-glow)}.auth-btn:hover{transform:translateY(-1px)}.auth-msg{margin-top:14px;font-size:13px;text-align:center;min-height:18px;color:var(--text-dim)}.auth-msg.gold{color:var(--gold)}.auth-msg.green{color:var(--green)}.field{margin-bottom:14px}.f-label{display:block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:7px}.f-input{width:100%;background:var(--bg-1);border:1.5px solid var(--border);color:var(--text);padding:13px 14px;border-radius:var(--radius-md);font-size:15px;font-family:inherit;min-height:var(--tap)}.f-input:focus{outline:0;border-color:var(--pink);background:var(--surface-2);box-shadow:0 0 0 3px var(--pink-glow)}.f-input::placeholder{color:var(--text-faint)}textarea.f-input{resize:vertical;min-height:80px}select.f-input{cursor:pointer}#pending-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:24px 16px}.pending-box{width:100%;max-width:480px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:48px 32px;text-align:center;box-shadow:var(--shadow-lg)}.pending-icon{font-size:56px;margin-bottom:18px;display:block}.pending-title{font-size:24px;font-weight:800;margin-bottom:12px;font-family:'Syne','Inter',sans-serif}.pending-sub{color:var(--text-dim);margin-bottom:28px;font-size:14px}.pending-logout{background:transparent;border:1.5px solid var(--border);color:var(--text-dim);padding:11px 24px;border-radius:var(--radius-md);font-weight:600;cursor:pointer;font-family:inherit;min-height:var(--tap)}#app{min-height:100vh;padding-bottom:80px;display:none}header{position:sticky;top:0;z-index:100;background:rgba(13,7,24,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}.app-logo{font-size:22px;font-weight:900;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Syne','Inter',sans-serif}.hdr-right{display:flex;align-items:center;gap:10px}.partner-name{font-size:14px;font-weight:600;color:var(--text)}.partner-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--gold);border:1px solid rgba(245,158,11,.25)}.logout-btn{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;min-height:36px}.nav-tabs{display:flex;gap:2px;padding:8px 12px;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--bg-1);scrollbar-width:none}.nav-tabs::-webkit-scrollbar{display:none}.nav-tab{background:transparent;border:0;color:var(--text-dim);padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:6px;min-height:40px;position:relative}.nav-tab.active{color:var(--text)}.nav-tab.active::after{content:'';position:absolute;bottom:-9px;left:14px;right:14px;height:2px;background:var(--grad-brand);border-radius:2px}.page{padding:24px 20px;max-width:1100px;margin:0 auto}.page-title{font-size:28px;font-weight:800;letter-spacing:-.025em;margin-bottom:6px;line-height:1.15;font-family:'Syne','Inter',sans-serif}.page-title span,.page-title b{background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent}.page-sub{color:var(--text-dim);font-size:14px;margin-bottom:24px}.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:22px}.stat-card{background:var(--grad-card),var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-brand);opacity:.6}.stat-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}.stat-value{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;font-family:'Syne','Inter',sans-serif}.stat-value.gold{color:var(--gold)}.stat-value.green{color:var(--green)}.stat-value.pink{color:var(--pink)}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:18px}.card-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}.mg{margin-bottom:18px}.ref-box{background:linear-gradient(135deg,rgba(255,46,148,.08),rgba(124,58,237,.05));border:1px solid rgba(255,46,148,.2);border-radius:var(--radius-lg);padding:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px}.ref-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}.ref-link{color:var(--pink);font-weight:600;word-break:break-all;font-size:14px}.ref-copy{background:var(--grad-brand);border:0;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;min-height:40px}.btn{background:var(--surface-3);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:var(--radius-md);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;min-height:var(--tap)}.btn-primary{background:var(--grad-brand);border:0;color:#fff;font-weight:700;box-shadow:0 4px 14px var(--pink-glow)}.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}.bandi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:22px}.bando-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px}.bando-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);width:fit-content}.bando-name{font-size:18px;font-weight:800;font-family:'Syne','Inter',sans-serif}.bando-desc{color:var(--text-dim);font-size:14px;line-height:1.5;flex:1}.bando-amount{font-size:17px;font-weight:800;color:var(--pink)}.bando-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--text-faint);gap:10px}.bando-scad{font-weight:600}.gold{color:var(--gold)}.green{color:var(--green)}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface-3);border:1px solid var(--border);color:var(--text);padding:13px 22px;border-radius:var(--radius-md);font-weight:600;font-size:14px;box-shadow:var(--shadow-lg);z-index:1000;opacity:0;pointer-events:none;transition:all .3s}.toast.active{opacity:1}@media(max-width:768px){body{font-size:14px}header{padding:12px 16px}.app-logo{font-size:19px}.partner-name{display:none}.logout-btn{padding:6px 10px;font-size:12px}.page{padding:18px 14px}.page-title{font-size:22px}.page-sub{font-size:13px;margin-bottom:18px}.stat-strip{grid-template-columns:repeat(2,1fr);gap:10px}.stat-card{padding:14px}.stat-value{font-size:22px}.card{padding:16px}.ref-box{padding:14px;flex-direction:column;align-items:stretch}.ref-copy{width:100%}.bandi-grid{grid-template-columns:1fr}.bando-card{padding:16px}.auth-box,.pending-box{padding:28px 20px}.auth-logo{font-size:26px}.nav-tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(13,7,24,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);border-bottom:0;padding:6px 4px;justify-content:space-around;z-index:90;padding-bottom:max(6px,env(safe-area-inset-bottom))}.nav-tab{flex:1;padding:8px 4px;font-size:10px;flex-direction:column;gap:3px;text-align:center;min-height:54px;border-radius:10px}.nav-tab.active{background:rgba(255,46,148,.1);color:var(--pink)}.nav-tab.active::after{display:none}}@media(max-width:380px){.stat-strip{grid-template-columns:1fr}.page-title{font-size:20px}}</style>
+</head>
+<body>
+
+<div id="splash"><div class="splash-logo">p2<span>finance</span></div></div>
+
+<!-- AUTH -->
+<div id="auth-screen" style="display:flex">
+  <div class="auth-box">
+    <div class="auth-logo">p2<span>finance</span></div>
+    <div class="auth-sub">Area Partner — accesso riservato</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Accedi</button>
+      <button class="auth-tab" id="tab-reg" onclick="switchTab('reg')">Registrati</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="login-form">
+      <label class="f-label">Email</label>
+      <input class="f-input" id="l-email" type="email" placeholder="tuaemail@esempio.it">
+      <label class="f-label">Password</label>
+      <input class="f-input" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="auth-btn" id="login-btn" onclick="doLogin()">Accedi</button>
+      <div class="auth-msg" id="login-msg"></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="reg-form" style="display:none">
+      <label class="f-label">Nome e cognome</label>
+      <input class="f-input" id="r-nome" type="text" placeholder="Mario Rossi">
+      <label class="f-label">Email</label>
+      <input class="f-input" id="r-email" type="email" placeholder="tuaemail@esempio.it">
+      <div id="reg-extra">
+        <label class="f-label">Professione</label>
+        <input class="f-input" id="r-prof" type="text" placeholder="Es: Commercialista, Consulente del lavoro...">
+        <label class="f-label">Telefono</label>
+        <input class="f-input" id="r-tel" type="tel" placeholder="Es: 338 1234567">
+      </div>
+      <label class="f-label">Password</label>
+      <input class="f-input" id="r-pass" type="password" placeholder="Min. 8 caratteri" onkeydown="if(event.key==='Enter')doRegister()">
+      <button class="auth-btn" id="reg-btn" onclick="doRegister()">Invia richiesta</button>
+      <div class="auth-msg" id="reg-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PENDING APPROVAL -->
+<div id="pending-screen">
+  <div class="pending-box">
+    <div class="pending-icon">⏳</div>
+    <div class="pending-title" style="color:white">Richiesta in attesa</div>
+    <div class="pending-sub">La tua registrazione è stata ricevuta. Il team P2Finance la verificherà entro 24 ore e riceverai una email di conferma.</div>
+    <button class="pending-logout" onclick="doLogout()">Esci</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="app-logo">p2<span>finance</span></div>
+    <div class="hdr-right">
+      <span class="partner-name" id="hdr-name"></span>
+      <span class="partner-badge" id="hdr-badge">Partner</span>
+      <button class="logout-btn" onclick="doLogout()">Esci</button>
+    </div>
+  </header>
+
+  <div class="nav-tabs" id="nav-tabs">
+    <button class="nav-tab active" onclick="goTo('dashboard',this)">📊 Dashboard</button>
+    <button class="nav-tab" onclick="goTo('lead',this)">👥 I miei lead</button>
+    <button class="nav-tab" onclick="goTo('guadagni',this)">💰 Guadagni</button>
+    <button class="nav-tab" onclick="goTo('bandi',this)">📋 Bandi attivi</button>
+    <button class="nav-tab" onclick="goTo('tool',this)">🛠️ Tool & Guide</button>
+    <button class="nav-tab" id="admin-tab" style="display:none" onclick="goTo('admin',this)">⚙️ Admin</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-title">Benvenuto, <em id="welcome-name"></em></div>
+    <div class="page-sub">Il tuo riepilogo come partner P2Finance.</div>
+    <div class="stat-strip">
+      <div class="stat-card"><div class="stat-label">Lead inviati</div><div class="stat-value" id="s-lead">—</div></div>
+      <div class="stat-card"><div class="stat-label">Progetti chiusi</div><div class="stat-value green" id="s-chiusi">—</div></div>
+      <div class="stat-card"><div class="stat-label">Commissioni</div><div class="stat-value mg" id="s-comm">—</div></div>
+      <div class="stat-card"><div class="stat-label">Da ricevere</div><div class="stat-value gold" id="s-pending">—</div></div>
+    </div>
+    <div class="ref-box">
+      <div>
+        <div class="ref-label">Il tuo link referral</div>
+        <div class="ref-link" id="ref-link">https://p2finance.it/?ref=...</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.3);margin-top:4px;">Ogni lead arrivato tramite questo link viene attribuito a te.</div>
+      </div>
+      <button class="ref-copy" onclick="copyRef()">Copia link</button>
+    </div>
+    <div class="card"><div class="card-title">📋 Ultimi lead</div><div id="dash-preview"></div></div>
+  </div>
+
+  <!-- LEAD -->
+  <div class="page" id="page-lead">
+    <div class="page-title">I miei <em>Lead</em></div>
+    <div class="page-sub">Inserisci e monitora i clienti che hai inviato a P2Finance.</div>
+    <div class="card">
+      <div class="card-title">➕ Nuovo lead</div>
+      <div class="grid-2">
+        <div class="field"><label>Nome / Azienda</label><input id="l-nome" type="text" placeholder="Es: Mario Bianchi — Rossi Srl"></div>
+        <div class="field"><label>Contatto</label><input id="l-contatto" type="text" placeholder="Email o telefono"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Settore</label>
+          <select id="l-settore"><option>Manifatturiero</option><option>Commercio</option><option>Servizi</option><option>Edilizia</option><option>Agricoltura</option><option>Tecnologia</option><option>Altro</option></select>
+        </div>
+        <div class="field"><label>Tipo esigenza</label>
+          <select id="l-tipo"><option>Finanza agevolata / bandi</option><option>Digitalizzazione AI</option><option>Startup / nuova impresa</option><option>SIMEST / export</option><option>Altro</option></select>
+        </div>
+        <div class="field"><label>Valore stimato (€)</label><input id="l-valore" type="number" placeholder="5000" min="0" step="500"></div>
+      </div>
+      <div class="field"><label>Note</label><input id="l-note" type="text" placeholder="Informazioni aggiuntive utili per il team P2Finance"></div>
+      <button class="btn btn-primary" id="add-lead-btn" onclick="addLead()">Aggiungi lead</button>
+    </div>
+    <div class="card"><div class="card-title">📋 I tuoi lead</div><div id="lead-list"></div></div>
+  </div>
+
+  <!-- GUADAGNI -->
+  <div class="page" id="page-guadagni">
+    <div class="page-title">I miei <em>Guadagni</em></div>
+    <div class="page-sub">Commissioni maturate al 10% su ogni progetto chiuso da P2Finance.</div>
+    <div class="stat-strip">
+      <div class="stat-card"><div class="stat-label">Totale maturato</div><div class="stat-value mg" id="g-tot">€0</div></div>
+      <div class="stat-card"><div class="stat-label">Già pagato</div><div class="stat-value green" id="g-pag">€0</div></div>
+      <div class="stat-card"><div class="stat-label">Da ricevere</div><div class="stat-value gold" id="g-att">€0</div></div>
+      <div class="stat-card"><div class="stat-label">Progetti chiusi</div><div class="stat-value" id="g-num">0</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">💶 Come funzionano le commissioni</div>
+      <div class="grid-3">
+        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px;">Step 1</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Invii un lead</div><div style="font-size:12px;color:var(--muted);">Il cliente ti contatta o arriva tramite il tuo link referral.</div></div>
+        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px;">Step 2</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Il progetto si chiude</div><div style="font-size:12px;color:var(--muted);">P2Finance finalizza il contratto. Lo stato del lead si aggiorna.</div></div>
+        <div style="background:rgba(196,0,106,.05);border:1px solid rgba(196,0,106,.15);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mg);margin-bottom:7px;">Step 3</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Ricevi il 10%</div><div style="font-size:12px;color:var(--muted);">Accredito entro 30 giorni. Minimo €100 per attivare il pagamento.</div></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">📊 Dettaglio commissioni</div><div id="comm-list"></div></div>
+  </div>
+
+  <!-- BANDI -->
+  <div class="page" id="page-bandi">
+    <div class="page-title">Bandi <em>Attivi</em></div>
+    <div class="page-sub">Aggiornato giugno 2026. Usa questi bandi per identificare opportunità per i tuoi clienti.</div>
+    <div class="bandi-grid">
+      <div class="bando-card"><span class="bando-tag">🔴 URGENTE</span><div class="bando-name">ISI INAIL 2026</div><div class="bando-desc">Fondo perduto per sicurezza lavoro, macchinari, ammodernamento impianti. Funziona a click day.</div><div class="bando-footer"><span class="bando-amount">Fino a €130.000 FP</span><span class="bando-scad">⏰ Click day giugno</span></div></div>
+      <div class="bando-card"><span class="bando-tag">⚡ TOP</span><div class="bando-name">Transizione 5.0</div><div class="bando-desc">Credito d'imposta 5%–45% per investimenti in digitalizzazione con riduzione consumi energetici.</div><div class="bando-footer"><span class="bando-amount">5% – 45% credito</span><span class="bando-scad">📅 Aperto tutto 2026</span></div></div>
+      <div class="bando-card"><span class="bando-tag">🏭 MACCHINARI</span><div class="bando-name">Nuova Sabatini 2026</div><div class="bando-desc">Finanziamento agevolato per macchinari, attrezzature, software e hardware 4.0.</div><div class="bando-footer"><span class="bando-amount">20K – 4M€</span><span class="bando-scad">📅 Sportello continuo</span></div></div>
+      <div class="bando-card"><span class="bando-tag">🌍 EXPORT</span><div class="bando-name">SIMEST 2026</div><div class="bando-desc">Finanziamento agevolato per internazionalizzazione. Anche filiera esportatrice.</div><div class="bando-footer"><span class="bando-amount">Fino a €300.000</span><span class="bando-scad">📅 Sportello aperto</span></div></div>
+      <div class="bando-card"><span class="bando-tag">🌅 SUD ITALIA</span><div class="bando-name">ZES Unica Mezzogiorno</div><div class="bando-desc">Credito d'imposta fino al 60% per investimenti nelle regioni del Sud. Cumulabile.</div><div class="bando-footer"><span class="bando-amount">Fino al 60%</span><span class="bando-scad">📅 Aperto 2026</span></div></div>
+      <div class="bando-card"><span class="bando-tag">🔬 INNOVAZIONE</span><div class="bando-name">Fondo PMI EUIPO</div><div class="bando-desc">Voucher per brevetti, marchi e design europei e internazionali.</div><div class="bando-footer"><span class="bando-amount">Fino a €2.500</span><span class="bando-scad">⏰ Scad. 4 dic 2026</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">💡 Script per trovare clienti</div>
+      <div class="grid-2">
+        <div style="background:var(--warm);border-radius:10px;padding:14px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Domande da fare ai tuoi clienti</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Hanno macchinari da acquistare? Dipendenti? Sono al Sud? Vogliono esportare? Ogni sì = un bando potenziale.</div></div>
+        <div style="background:var(--warm);border-radius:10px;padding:14px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Lo script da usare</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">"Sapevi che la tua azienda potrebbe ottenere fino a €X di contributi? Ho dei contatti specializzati — ti metto in contatto?"</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL -->
+  <div class="page" id="page-tool">
+    <div class="page-title">Tool & <em>Guide</em></div>
+    <div class="page-sub">Tutto quello che ti serve per supportare i tuoi clienti.</div>
+    <div class="card">
+      <div class="card-title">📞 Contatti diretti P2Finance</div>
+      <div class="grid-2">
+        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">WhatsApp Partner</div><div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Per domande urgenti su bandi o clienti. Risposta entro 4h lavorative.</div><a href="https://wa.me/393336153808" target="_blank" style="font-size:12px;font-weight:600;color:var(--mg);text-decoration:none;">→ +39 333 615 3808</a></div>
+        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Email Partner</div><div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Per report commissioni e documentazione. Risposta entro 24h.</div><a href="mailto:info@p2finance.it" style="font-size:12px;font-weight:600;color:var(--mg);text-decoration:none;">→ info@p2finance.it</a></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌐 Risorse utili</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="https://www.p2finance.it" target="_blank" style="display:flex;align-items:center;gap:14px;padding:13px 15px;background:var(--warm);border-radius:10px;text-decoration:none;color:var(--navy);border:1px solid transparent;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--mg)'" onmouseout="this.style.borderColor='transparent'">
+          <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,0,106,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🌐</div>
+          <div><div style="font-weight:600;font-size:14px;margin-bottom:2px;">Sito P2Finance</div><div style="font-size:12px;color:var(--muted);">www.p2finance.it</div></div>
+          <div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--mg);">Apri →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="page-admin">
+    <div class="page-title">Pannello <em>Admin</em></div>
+    <div class="page-sub">Gestisci partner, approva richieste e aggiorna stati lead.</div>
+    <div class="card">
+      <div class="card-title">👥 Partner in attesa di approvazione</div>
+      <div id="pending-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">✅ Partner attivi</div>
+      <div id="active-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Tutti i lead (tutti i partner)</div>
+      <div id="all-leads-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://wxvxcduouylaaeilifvp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_97bvz8WzJAmMRqQg05iknw_iDWt1jZU';
+const ADMIN_EMAIL = 'davide@p2finance.it';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentProfile = null;
+
+// INIT
+async function init() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await loadProfile();
+  }
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(() => document.getElementById('splash').style.display = 'none', 500);
+}
+
+async function loadProfile() {
+  const { data, error } = await db.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (error || !data) { showAuth(); return; }
+  currentProfile = data;
+  if (!data.approvato) { showPending(); return; }
+  showApp();
+}
+
+function showAuth() {
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('pending-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showPending() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('pending-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('pending-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+
+  document.getElementById('hdr-name').textContent = currentProfile.nome;
+  document.getElementById('welcome-name').textContent = currentProfile.nome.split(' ')[0];
+
+  if (currentProfile.is_admin) {
+    document.getElementById('hdr-badge').textContent = 'Admin';
+    document.getElementById('hdr-badge').classList.add('admin-badge');
+    document.getElementById('admin-tab').style.display = 'block';
+  }
+
+  const ref = `https://p2finance.it/?ref=${currentProfile.ref_code || 'partner'}`;
+  document.getElementById('ref-link').textContent = ref;
+
+  loadDashboard();
+}
+
+// AUTH TABS
+function switchTab(tab) {
+  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('reg-form').style.display = tab === 'reg' ? 'block' : 'none';
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-reg').classList.toggle('active', tab === 'reg');
+  if (tab === 'reg') document.getElementById('reg-extra').style.display = 'block';
+}
+
+// LOGIN
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass = document.getElementById('l-pass').value;
+  const btn = document.getElementById('login-btn');
+  const msg = document.getElementById('login-msg');
+
+  if (!email || !pass) { showMsg(msg, 'Inserisci email e password.', 'error'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span>Accesso...';
+
+  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    showMsg(msg, 'Email o password non corretti.', 'error');
+    btn.disabled = false; btn.textContent = 'Accedi';
+    return;
+  }
+  currentUser = data.user;
+  await loadProfile();
+  btn.disabled = false; btn.textContent = 'Accedi';
+}
+
+// REGISTER
+async function doRegister() {
+  const nome = document.getElementById('r-nome').value.trim();
+  const email = document.getElementById('r-email').value.trim();
+  const pass = document.getElementById('r-pass').value;
+  const prof = document.getElementById('r-prof').value.trim();
+  const tel = document.getElementById('r-tel').value.trim();
+  const btn = document.getElementById('reg-btn');
+  const msg = document.getElementById('reg-msg');
+
+  if (!nome || !email || !pass) { showMsg(msg, 'Compila tutti i campi obbligatori.', 'error'); return; }
+  if (pass.length < 8) { showMsg(msg, 'La password deve avere almeno 8 caratteri.', 'error'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span>Invio richiesta...';
+
+  const { data, error } = await db.auth.signUp({
+    email, password: pass,
+    options: { data: { nome, professione: prof, telefono: tel } }
+  });
+
+  if (error) {
+    showMsg(msg, error.message || 'Errore nella registrazione.', 'error');
+    btn.disabled = false; btn.textContent = 'Invia richiesta';
+    return;
+  }
+
+  // Aggiorna profilo con telefono e professione
+  if (data.user) {
+    await db.from('profiles').update({ telefono: tel, professione: prof }).eq('id', data.user.id);
+  }
+
+  showMsg(msg, '✓ Richiesta inviata! Il team P2Finance ti contatterà entro 24 ore.', 'success');
+  btn.disabled = false; btn.textContent = 'Invia richiesta';
+}
+
+// LOGOUT
+async function doLogout() {
+  await db.auth.signOut();
+  currentUser = null; currentProfile = null;
+  showAuth();
+}
+
+// DASHBOARD
+async function loadDashboard() {
+  const { data: leads } = await db.from('leads').select('*').eq('partner_id', currentUser.id);
+  const all = leads || [];
+  const chiusi = all.filter(l => l.stato === 'chiuso');
+  const commTot = chiusi.reduce((s,l) => s + (l.valore * 0.1), 0);
+  const pagati = chiusi.filter(l => l.pagato).reduce((s,l) => s + (l.valore * 0.1), 0);
+
+  document.getElementById('s-lead').textContent = all.length;
+  document.getElementById('s-chiusi').textContent = chiusi.length;
+  document.getElementById('s-comm').textContent = '€' + commTot.toLocaleString('it-IT');
+  document.getElementById('s-pending').textContent = '€' + (commTot - pagati).toLocaleString('it-IT');
+  document.getElementById('g-tot').textContent = '€' + commTot.toLocaleString('it-IT');
+  document.getElementById('g-pag').textContent = '€' + pagati.toLocaleString('it-IT');
+  document.getElementById('g-att').textContent = '€' + (commTot - pagati).toLocaleString('it-IT');
+  document.getElementById('g-num').textContent = chiusi.length;
+
+  renderLeads(all.slice(-3).reverse(), 'dash-preview');
+  renderLeads([...all].reverse(), 'lead-list');
+  renderComm(chiusi, 'comm-list');
+  if (currentProfile.is_admin) loadAdmin();
+}
+
+const statoP = {attesa:'pill-attesa',trattativa:'pill-trattativa',chiuso:'pill-chiuso',perso:'pill-perso'};
+const statoL = {attesa:'In attesa',trattativa:'In trattativa',chiuso:'Chiuso ✓',perso:'Perso'};
+
+function renderLeads(leads, elId) {
+  const el = document.getElementById(elId);
+  if (!leads.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Nessun lead ancora</div><div class="empty-sub">Aggiungi il primo lead con il form sopra.</div></div>';
+    return;
+  }
+  el.innerHTML = leads.map(l => `
+    <div class="lead-row">
+      <div>
+        <div class="lead-nome">${l.nome}</div>
+        <div class="lead-det">${l.settore||''} · ${l.tipo||''}</div>
+        ${l.note ? `<div class="lead-det" style="font-style:italic">${l.note}</div>` : ''}
+      </div>
+      <div class="lead-val">€${(l.valore||0).toLocaleString('it-IT')}</div>
+      <div class="lead-comm">${l.stato==='chiuso' ? '€'+Math.round((l.valore||0)*0.1).toLocaleString('it-IT') : ''}</div>
+      <span class="pill ${statoP[l.stato]||'pill-attesa'}">${statoL[l.stato]||l.stato}</span>
+    </div>`).join('');
+}
+
+function renderComm(leads, elId) {
+  const el = document.getElementById(elId);
+  if (!leads.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">💰</div><div class="empty-title">Nessuna commissione ancora</div><div class="empty-sub">Le commissioni appaiono quando P2Finance chiude i tuoi lead.</div></div>';
+    return;
+  }
+  el.innerHTML = leads.map(l => `
+    <div style="display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:13px 15px;background:var(--warm);border-radius:10px;margin-bottom:8px;">
+      <div><div style="font-weight:600;font-size:14px;">${l.nome}</div><div style="font-size:12px;color:var(--muted)">${l.settore} · Progetto €${(l.valore||0).toLocaleString('it-IT')}</div></div>
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--green)">€${Math.round((l.valore||0)*0.1).toLocaleString('it-IT')}</div>
+      <span class="pill ${l.pagato ? 'pill-chiuso' : 'pill-attesa'}">${l.pagato ? 'Pagato' : 'In attesa'}</span>
+    </div>`).join('');
+}
+
+// ADD LEAD
+async function addLead() {
+  const nome = document.getElementById('l-nome').value.trim();
+  if (!nome) { showToast('Inserisci il nome del cliente'); return; }
+  const btn = document.getElementById('add-lead-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="loading-spinner"></span>Salvataggio...';
+
+  const { error } = await db.from('leads').insert({
+    partner_id: currentUser.id,
+    nome,
+    contatto: document.getElementById('l-contatto').value,
+    settore: document.getElementById('l-settore').value,
+    tipo: document.getElementById('l-tipo').value,
+    valore: parseFloat(document.getElementById('l-valore').value) || 5000,
+    note: document.getElementById('l-note').value
+  });
+
+  btn.disabled = false; btn.textContent = 'Aggiungi lead';
+  if (error) { showToast('Errore: ' + error.message); return; }
+
+  document.getElementById('l-nome').value = '';
+  document.getElementById('l-contatto').value = '';
+  document.getElementById('l-note').value = '';
+  document.getElementById('l-valore').value = '';
+  showToast('Lead aggiunto ✓ — P2Finance lo contatterà a breve');
+  loadDashboard();
+}
+
+// ADMIN
+async function loadAdmin() {
+  const { data: allPartners } = await db.from('profiles').select('*').order('created_at');
+  const pending = (allPartners||[]).filter(p => !p.approvato && !p.is_admin);
+  const active = (allPartners||[]).filter(p => p.approvato && !p.is_admin);
+
+  const pel = document.getElementById('pending-list');
+  pel.innerHTML = pending.length ? pending.map(p => `
+    <div class="partner-row">
+      <div><div style="font-weight:600">${p.nome}</div><div class="partner-email">${p.email} · ${p.professione||'—'}</div></div>
+      <button class="btn btn-sm btn-green" onclick="approvePartner('${p.id}')">✓ Approva</button>
+      <button class="btn btn-sm btn-red" onclick="deletePartner('${p.id}')">✕ Rifiuta</button>
+    </div>`).join('') :
+    '<div class="empty" style="padding:20px"><div class="empty-sub">Nessuna richiesta in attesa.</div></div>';
+
+  const ael = document.getElementById('active-list');
+  ael.innerHTML = active.length ? active.map(p => `
+    <div class="partner-row">
+      <div><div style="font-weight:600">${p.nome}</div><div class="partner-email">${p.email} · ref: ${p.ref_code||'—'}</div></div>
+      <span class="pill pill-chiuso">Attivo</span>
+    </div>`).join('') :
+    '<div class="empty" style="padding:20px"><div class="empty-sub">Nessun partner attivo ancora.</div></div>';
+
+  const { data: allLeads } = await db.from('leads').select('*, profiles(nome)').order('created_at', {ascending:false});
+  const lel = document.getElementById('all-leads-list');
+  lel.innerHTML = (allLeads||[]).length ? (allLeads||[]).map(l => `
+    <div class="lead-row">
+      <div>
+        <div class="lead-nome">${l.nome}</div>
+        <div class="lead-det">Partner: ${l.profiles?.nome||'—'} · ${l.settore||''}</div>
+      </div>
+      <div class="lead-val">€${(l.valore||0).toLocaleString('it-IT')}</div>
+      <select class="pill" onchange="updateLeadStato('${l.id}',this.value)" style="border:none;cursor:pointer;background:transparent;font-weight:600;font-size:11px;padding:3px 8px;">
+        ${['attesa','trattativa','chiuso','perso'].map(s => `<option value="${s}" ${l.stato===s?'selected':''}>${statoL[s]}</option>`).join('')}
+      </select>
+      <input type="checkbox" ${l.pagato?'checked':''} onchange="updateLeadPagato('${l.id}',this.checked)" title="Segna come pagato">
+    </div>`).join('') :
+    '<div class="empty" style="padding:20px"><div class="empty-sub">Nessun lead ancora.</div></div>';
+}
+
+async function approvePartner(id) {
+  await db.from('profiles').update({ approvato: true }).eq('id', id);
+  showToast('Partner approvato ✓');
+  loadAdmin();
+}
+
+async function deletePartner(id) {
+  await db.from('profiles').delete().eq('id', id);
+  showToast('Partner rimosso');
+  loadAdmin();
+}
+
+async function updateLeadStato(id, stato) {
+  await db.from('leads').update({ stato }).eq('id', id);
+  showToast('Stato aggiornato');
+}
+
+async function updateLeadPagato(id, pagato) {
+  await db.from('leads').update({ pagato }).eq('id', id);
+  showToast(pagato ? 'Segnato come pagato ✓' : 'Pagamento rimosso');
+}
+
+// NAV
+function goTo(id, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('page-' + id).classList.add('active');
+  if (id === 'admin') loadAdmin();
+}
+
+// UTILS
+function copyRef() {
+  navigator.clipboard.writeText(document.getElementById('ref-link').textContent)
+    .then(() => showToast('Link copiato ✓'));
+}
+
+function showMsg(el, msg, type) {
+  el.textContent = msg;
+  el.className = 'auth-msg ' + type;
+  el.style.display = 'block';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Start
+init();
+</script>
+</body>
+</html>
