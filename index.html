@@ -71,7 +71,7 @@ body{font-family:'Inter','DM Sans',-apple-system,sans-serif;background:var(--bg-
 .auth-msg.success{color:var(--green)}
 .field{margin-bottom:14px}
 .f-label,label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:7px}
-.f-input{width:100%;background:var(--bg-1);border:1.5px solid var(--border);color:var(--text);padding:13px 14px;border-radius:var(--radius-md);font-size:15px;font-family:inherit;min-height:var(--tap)}
+.f-input{width:100%;background:var(--bg-1);border:1.5px solid var(--border);color:var(--text);padding:13px 14px;border-radius:var(--radius-md);font-size:15px;font-family:inherit;min-height:var(--tap);transition:border-color .15s,box-shadow .15s}
 .f-input:focus{outline:0;border-color:var(--pink);background:var(--surface);box-shadow:0 0 0 3px var(--pink-glow)}
 .f-input::placeholder{color:var(--text-faint)}
 textarea.f-input{resize:vertical;min-height:80px}
@@ -102,7 +102,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 /* NAV */
 .nav-tabs{display:flex;gap:2px;padding:8px 12px;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--surface);scrollbar-width:none}
 .nav-tabs::-webkit-scrollbar{display:none}
-.nav-tab{background:transparent;border:0;color:var(--text-dim);padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:6px;min-height:40px;position:relative}
+.nav-tab{background:transparent;border:0;color:var(--text-dim);padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:6px;min-height:40px;position:relative;transition:color .15s,background .15s}
 .nav-tab:hover{color:var(--text);background:var(--surface-2)}
 .nav-tab.active{color:var(--pink)}
 .nav-tab.active::after{content:'';position:absolute;bottom:-9px;left:14px;right:14px;height:2px;background:var(--grad-brand);border-radius:2px}
@@ -112,11 +112,12 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 .page.active{display:block}
 .page-title{font-size:28px;font-weight:900;letter-spacing:-.025em;margin-bottom:6px;line-height:1.15;font-family:'Inter','DM Sans',sans-serif;color:var(--text)}
 .page-title span,.page-title b,.page-title em{background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:normal}
-.page-sub{color:var(--text-dim);font-size:14px;margin-bottom:24px}
+.page-sub{color:var(--text-dim);font-size:14px;line-height:1.5;margin-bottom:24px}
 
 /* STAT CARDS */
 .stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:22px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm)}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s}
+.stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-brand);opacity:.85}
 .stat-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}
 .stat-value{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;font-family:'Inter','DM Sans',sans-serif;color:var(--text)}
@@ -128,19 +129,20 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 /* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
 .card-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.ci{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--surface-3);font-size:15px;flex-shrink:0}
 .mg{margin-bottom:18px}
 
 /* REFERRAL BOX */
 .ref-box{background:var(--grad-card),var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px;box-shadow:var(--shadow-sm)}
 .ref-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
 .ref-link{color:var(--pink);font-weight:600;word-break:break-all;font-size:14px}
-.ref-copy{background:var(--grad-brand);border:0;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;min-height:40px;box-shadow:0 4px 14px var(--pink-glow)}
+.ref-copy{background:var(--grad-brand);border:0;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;min-height:40px;box-shadow:0 4px 14px var(--pink-glow);transition:transform .15s,box-shadow .15s}
 .ref-copy:hover{transform:translateY(-1px)}
 
 /* BUTTONS */
-.btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:var(--radius-md);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;min-height:var(--tap)}
+.btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:var(--radius-md);font-weight:600;cursor:pointer;font-family:inherit;font-size:14px;min-height:var(--tap);transition:border-color .15s,background .15s,transform .15s}
 .btn:hover{border-color:var(--border-hover);background:var(--surface-2)}
-.btn-primary{background:var(--grad-brand);border:0;color:#fff;font-weight:700;box-shadow:0 4px 14px var(--pink-glow)}
+.btn-primary{background:var(--grad-brand);border:0;color:#fff;font-weight:700;box-shadow:0 4px 14px var(--pink-glow);transition:transform .15s,box-shadow .15s}
 .btn-primary:hover{transform:translateY(-1px)}
 .btn-sm{padding:8px 14px;font-size:13px;min-height:36px}
 .btn-green{background:var(--green-bg);border:1px solid rgba(16,185,129,.25);color:var(--green)}
@@ -154,7 +156,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 
 /* BANDI */
 .bandi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:22px}
-.bando-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)}
+.bando-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s,border-color .2s}
+.bando-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--border-hover)}
 .bando-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);width:fit-content}
 .bando-name{font-size:18px;font-weight:800;font-family:'Inter','DM Sans',sans-serif;color:var(--text)}
 .bando-desc{color:var(--text-dim);font-size:14px;line-height:1.5;flex:1}
@@ -165,21 +168,23 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 .green{color:var(--green)}
 
 /* PILLS (lead/partner status) */
-.pill{display:inline-block;padding:4px 11px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:none;white-space:nowrap}
+.pill{display:inline-block;padding:5px 12px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.02em;text-transform:none;white-space:nowrap;line-height:1.3}
 .pill-attesa{background:var(--gold-bg);color:var(--gold)}
 .pill-trattativa{background:rgba(124,58,237,.1);color:var(--purple)}
 .pill-chiuso{background:var(--green-bg);color:var(--green)}
 .pill-perso{background:var(--red-bg);color:var(--red)}
 
 /* LEAD ROWS */
-.lead-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px}
+.lead-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;transition:border-color .2s,background .2s}
+.lead-row:hover{border-color:var(--border-hover);background:var(--surface-3)}
 .lead-nome{font-weight:700;font-size:14px;color:var(--text)}
 .lead-det{font-size:12px;color:var(--text-dim);margin-top:2px}
 .lead-val{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
 .lead-comm{font-family:'Inter',sans-serif;font-size:14px;font-weight:800;color:var(--green)}
 
 /* PARTNER ROWS (admin) */
-.partner-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;flex-wrap:wrap}
+.partner-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;flex-wrap:wrap;transition:border-color .2s,background .2s}
+.partner-row:hover{border-color:var(--border-hover);background:var(--surface-3)}
 .partner-email{font-size:12px;color:var(--text-dim);margin-top:2px}
 
 /* EMPTY STATES */
@@ -321,7 +326,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
       </div>
       <button class="ref-copy" onclick="copyRef()">Copia link</button>
     </div>
-    <div class="card"><div class="card-title">📋 Ultimi lead</div><div id="dash-preview"></div></div>
+    <div class="card"><div class="card-title"><span class="ci">📋</span>Ultimi lead</div><div id="dash-preview"></div></div>
   </div>
 
   <!-- LEAD -->
@@ -329,7 +334,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
     <div class="page-title">I miei <em>Lead</em></div>
     <div class="page-sub">Inserisci e monitora i clienti che hai inviato a P2Finance.</div>
     <div class="card">
-      <div class="card-title">➕ Nuovo lead</div>
+      <div class="card-title"><span class="ci">➕</span>Nuovo lead</div>
       <div class="grid-2">
         <div class="field"><label>Nome / Azienda</label><input id="l-nome" type="text" placeholder="Es: Mario Bianchi — Rossi Srl"></div>
         <div class="field"><label>Contatto</label><input id="l-contatto" type="text" placeholder="Email o telefono"></div>
@@ -346,7 +351,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
       <div class="field"><label>Note</label><input id="l-note" type="text" placeholder="Informazioni aggiuntive utili per il team P2Finance"></div>
       <button class="btn btn-primary" id="add-lead-btn" onclick="addLead()">Aggiungi lead</button>
     </div>
-    <div class="card"><div class="card-title">📋 I tuoi lead</div><div id="lead-list"></div></div>
+    <div class="card"><div class="card-title"><span class="ci">📋</span>I tuoi lead</div><div id="lead-list"></div></div>
   </div>
 
   <!-- GUADAGNI -->
@@ -360,14 +365,14 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
       <div class="stat-card"><div class="stat-label">Progetti chiusi</div><div class="stat-value" id="g-num">0</div></div>
     </div>
     <div class="card">
-      <div class="card-title">💶 Come funzionano le commissioni</div>
+      <div class="card-title"><span class="ci">💶</span>Come funzionano le commissioni</div>
       <div class="grid-3">
         <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px;">Step 1</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Invii un lead</div><div style="font-size:12px;color:var(--muted);">Il cliente ti contatta o arriva tramite il tuo link referral.</div></div>
         <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px;">Step 2</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Il progetto si chiude</div><div style="font-size:12px;color:var(--muted);">P2Finance finalizza il contratto. Lo stato del lead si aggiorna.</div></div>
         <div style="background:rgba(196,0,106,.05);border:1px solid rgba(196,0,106,.15);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mg);margin-bottom:7px;">Step 3</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Ricevi il 10%</div><div style="font-size:12px;color:var(--muted);">Accredito entro 30 giorni. Minimo €100 per attivare il pagamento.</div></div>
       </div>
     </div>
-    <div class="card"><div class="card-title">📊 Dettaglio commissioni</div><div id="comm-list"></div></div>
+    <div class="card"><div class="card-title"><span class="ci">📊</span>Dettaglio commissioni</div><div id="comm-list"></div></div>
   </div>
 
   <!-- BANDI -->
@@ -383,7 +388,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
       <div class="bando-card"><span class="bando-tag">🔬 INNOVAZIONE</span><div class="bando-name">Fondo PMI EUIPO</div><div class="bando-desc">Voucher per brevetti, marchi e design europei e internazionali.</div><div class="bando-footer"><span class="bando-amount">Fino a €2.500</span><span class="bando-scad">⏰ Scad. 4 dic 2026</span></div></div>
     </div>
     <div class="card">
-      <div class="card-title">💡 Script per trovare clienti</div>
+      <div class="card-title"><span class="ci">💡</span>Script per trovare clienti</div>
       <div class="grid-2">
         <div style="background:var(--warm);border-radius:10px;padding:14px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Domande da fare ai tuoi clienti</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">Hanno macchinari da acquistare? Dipendenti? Sono al Sud? Vogliono esportare? Ogni sì = un bando potenziale.</div></div>
         <div style="background:var(--warm);border-radius:10px;padding:14px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Lo script da usare</div><div style="font-size:12px;color:var(--muted);line-height:1.6;">"Sapevi che la tua azienda potrebbe ottenere fino a €X di contributi? Ho dei contatti specializzati — ti metto in contatto?"</div></div>
@@ -396,14 +401,14 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
     <div class="page-title">Tool & <em>Guide</em></div>
     <div class="page-sub">Tutto quello che ti serve per supportare i tuoi clienti.</div>
     <div class="card">
-      <div class="card-title">📞 Contatti diretti P2Finance</div>
+      <div class="card-title"><span class="ci">📞</span>Contatti diretti P2Finance</div>
       <div class="grid-2">
         <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">WhatsApp Partner</div><div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Per domande urgenti su bandi o clienti. Risposta entro 4h lavorative.</div><a href="https://wa.me/393336153808" target="_blank" style="font-size:12px;font-weight:600;color:var(--mg);text-decoration:none;">→ +39 333 615 3808</a></div>
         <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-weight:600;font-size:13px;margin-bottom:6px;">Email Partner</div><div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Per report commissioni e documentazione. Risposta entro 24h.</div><a href="mailto:info@p2finance.it" style="font-size:12px;font-weight:600;color:var(--mg);text-decoration:none;">→ info@p2finance.it</a></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">🌐 Risorse utili</div>
+      <div class="card-title"><span class="ci">🌐</span>Risorse utili</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <a href="https://www.p2finance.it" target="_blank" style="display:flex;align-items:center;gap:14px;padding:13px 15px;background:var(--warm);border-radius:10px;text-decoration:none;color:var(--navy);border:1px solid transparent;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--mg)'" onmouseout="this.style.borderColor='transparent'">
           <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,0,106,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🌐</div>
@@ -419,15 +424,15 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
     <div class="page-title">Pannello <em>Admin</em></div>
     <div class="page-sub">Gestisci partner, approva richieste e aggiorna stati lead.</div>
     <div class="card">
-      <div class="card-title">👥 Partner in attesa di approvazione</div>
+      <div class="card-title"><span class="ci">👥</span>Partner in attesa di approvazione</div>
       <div id="pending-list"></div>
     </div>
     <div class="card">
-      <div class="card-title">✅ Partner attivi</div>
+      <div class="card-title"><span class="ci">✅</span>Partner attivi</div>
       <div id="active-list"></div>
     </div>
     <div class="card">
-      <div class="card-title">📋 Tutti i lead (tutti i partner)</div>
+      <div class="card-title"><span class="ci">📋</span>Tutti i lead (tutti i partner)</div>
       <div id="all-leads-list"></div>
     </div>
   </div>
