@@ -186,6 +186,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 .lead-row:hover{border-color:var(--border-hover);background:var(--surface-3)}
 .lead-nome{font-weight:700;font-size:14px;color:var(--text)}
 .lead-det{font-size:12px;color:var(--text-dim);margin-top:2px}
+.lead-bando{display:inline-block;margin-top:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:rgba(124,58,237,.1);color:var(--purple)}
 .lead-val{font-family:'Inter',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
 .lead-comm{font-family:'Inter',sans-serif;font-size:14px;font-weight:800;color:var(--green)}
 
@@ -355,7 +356,12 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
         </div>
         <div class="field"><label>Valore stimato (€)</label><input id="l-valore" type="number" placeholder="5000" min="0" step="500"></div>
       </div>
-      <div class="field"><label>Note</label><input id="l-note" type="text" placeholder="Informazioni aggiuntive utili per il team P2Finance"></div>
+      <div class="grid-2">
+        <div class="field"><label>Bando di interesse</label>
+          <select id="l-bando"><option value="">Nessuno / da valutare</option><option>ISI INAIL 2026</option><option>Transizione 5.0</option><option>Nuova Sabatini 2026</option><option>SIMEST 2026</option><option>ZES Unica Mezzogiorno</option><option>Fondo PMI EUIPO</option><option>Altro</option></select>
+        </div>
+        <div class="field"><label>Note</label><input id="l-note" type="text" placeholder="Informazioni aggiuntive utili per il team P2Finance"></div>
+      </div>
       <button class="btn btn-primary" id="add-lead-btn" onclick="addLead()">Aggiungi lead</button>
     </div>
     <div class="card"><div class="card-title"><span class="ci">📋</span>I tuoi lead</div><div id="lead-list"></div></div>
@@ -620,7 +626,9 @@ function renderLeads(leads, elId) {
       <div>
         <div class="lead-nome">${l.nome}</div>
         <div class="lead-det">${l.settore||''} · ${l.tipo||''}</div>
+        ${l.bando_associato ? `<span class="lead-bando">🎯 ${l.bando_associato}</span>` : ''}
         ${l.note ? `<div class="lead-det" style="font-style:italic">${l.note}</div>` : ''}
+        ${l.contributo_ottenuto ? `<div class="lead-det" style="color:var(--green);font-weight:600;margin-top:4px">Contributo ottenuto: €${(l.contributo_ottenuto).toLocaleString('it-IT')}</div>` : ''}
       </div>
       <div class="lead-val">€${(l.valore||0).toLocaleString('it-IT')}</div>
       <div class="lead-comm">${l.stato==='chiuso' ? '€'+Math.round((l.valore||0)*0.1).toLocaleString('it-IT') : ''}</div>
@@ -656,7 +664,8 @@ async function addLead() {
     settore: document.getElementById('l-settore').value,
     tipo: document.getElementById('l-tipo').value,
     valore: parseFloat(document.getElementById('l-valore').value) || 5000,
-    note: document.getElementById('l-note').value
+    note: document.getElementById('l-note').value,
+    bando_associato: document.getElementById('l-bando').value || null
   });
 
   btn.disabled = false; btn.textContent = 'Aggiungi lead';
@@ -666,6 +675,7 @@ async function addLead() {
   document.getElementById('l-contatto').value = '';
   document.getElementById('l-note').value = '';
   document.getElementById('l-valore').value = '';
+  document.getElementById('l-bando').value = '';
   showToast('Lead aggiunto ✓ — P2Finance lo contatterà a breve');
   loadDashboard();
 }
@@ -700,6 +710,7 @@ async function loadAdmin() {
       <div>
         <div class="lead-nome">${l.nome}</div>
         <div class="lead-det">Partner: ${l.profiles?.nome||'—'} · ${l.settore||''}</div>
+        ${l.bando_associato ? `<span class="lead-bando">🎯 ${l.bando_associato}</span>` : ''}
       </div>
       <div class="lead-val">€${(l.valore||0).toLocaleString('it-IT')}</div>
       <select class="pill" onchange="updateLeadStato('${l.id}',this.value)" style="border:none;cursor:pointer;background:transparent;font-weight:600;font-size:11px;padding:3px 8px;">
