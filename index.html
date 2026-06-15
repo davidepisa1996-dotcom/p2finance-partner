@@ -119,6 +119,9 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s}
 .stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-brand);opacity:.85}
+.stat-card.green::before{background:var(--green)}
+.stat-card.gold::before{background:var(--gold)}
+.stat-card.mg::before{background:var(--purple)}
 .stat-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}
 .stat-value{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;font-family:'Inter','DM Sans',sans-serif;color:var(--text)}
 .stat-value.gold{color:var(--gold)}
@@ -159,6 +162,10 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 .bando-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s,border-color .2s}
 .bando-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--border-hover)}
 .bando-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);width:fit-content}
+.bando-tag.tag-red{background:var(--red-bg);color:var(--red);border-color:rgba(239,68,68,.2)}
+.bando-tag.tag-gold{background:var(--gold-bg);color:var(--gold);border-color:rgba(245,158,11,.2)}
+.bando-tag.tag-purple{background:rgba(124,58,237,.1);color:var(--purple);border-color:rgba(124,58,237,.2)}
+.bando-tag.tag-green{background:var(--green-bg);color:var(--green);border-color:rgba(16,185,129,.2)}
 .bando-name{font-size:18px;font-weight:800;font-family:'Inter','DM Sans',sans-serif;color:var(--text)}
 .bando-desc{color:var(--text-dim);font-size:14px;line-height:1.5;flex:1}
 .bando-amount{font-size:17px;font-weight:800;color:var(--pink)}
@@ -314,9 +321,9 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
     <div class="page-sub">Il tuo riepilogo come partner P2Finance.</div>
     <div class="stat-strip">
       <div class="stat-card"><div class="stat-label">Lead inviati</div><div class="stat-value" id="s-lead">—</div></div>
-      <div class="stat-card"><div class="stat-label">Progetti chiusi</div><div class="stat-value green" id="s-chiusi">—</div></div>
-      <div class="stat-card"><div class="stat-label">Commissioni</div><div class="stat-value mg" id="s-comm">—</div></div>
-      <div class="stat-card"><div class="stat-label">Da ricevere</div><div class="stat-value gold" id="s-pending">—</div></div>
+      <div class="stat-card green"><div class="stat-label">Progetti chiusi</div><div class="stat-value green" id="s-chiusi">—</div></div>
+      <div class="stat-card mg"><div class="stat-label">Commissioni</div><div class="stat-value mg" id="s-comm">—</div></div>
+      <div class="stat-card gold"><div class="stat-label">Da ricevere</div><div class="stat-value gold" id="s-pending">—</div></div>
     </div>
     <div class="ref-box">
       <div>
@@ -359,17 +366,17 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
     <div class="page-title">I miei <em>Guadagni</em></div>
     <div class="page-sub">Commissioni maturate al 10% su ogni progetto chiuso da P2Finance.</div>
     <div class="stat-strip">
-      <div class="stat-card"><div class="stat-label">Totale maturato</div><div class="stat-value mg" id="g-tot">€0</div></div>
-      <div class="stat-card"><div class="stat-label">Già pagato</div><div class="stat-value green" id="g-pag">€0</div></div>
-      <div class="stat-card"><div class="stat-label">Da ricevere</div><div class="stat-value gold" id="g-att">€0</div></div>
+      <div class="stat-card mg"><div class="stat-label">Totale maturato</div><div class="stat-value mg" id="g-tot">€0</div></div>
+      <div class="stat-card green"><div class="stat-label">Già pagato</div><div class="stat-value green" id="g-pag">€0</div></div>
+      <div class="stat-card gold"><div class="stat-label">Da ricevere</div><div class="stat-value gold" id="g-att">€0</div></div>
       <div class="stat-card"><div class="stat-label">Progetti chiusi</div><div class="stat-value" id="g-num">0</div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ci">💶</span>Come funzionano le commissioni</div>
       <div class="grid-3">
-        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px;">Step 1</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Invii un lead</div><div style="font-size:12px;color:var(--muted);">Il cliente ti contatta o arriva tramite il tuo link referral.</div></div>
-        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px;">Step 2</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Il progetto si chiude</div><div style="font-size:12px;color:var(--muted);">P2Finance finalizza il contratto. Lo stato del lead si aggiorna.</div></div>
-        <div style="background:rgba(196,0,106,.05);border:1px solid rgba(196,0,106,.15);border-radius:10px;padding:15px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mg);margin-bottom:7px;">Step 3</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Ricevi il 10%</div><div style="font-size:12px;color:var(--muted);">Accredito entro 30 giorni. Minimo €100 per attivare il pagamento.</div></div>
+        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="width:26px;height:26px;border-radius:50%;background:var(--surface-3);color:var(--text-dim);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-bottom:10px;">1</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Invii un lead</div><div style="font-size:12px;color:var(--muted);">Il cliente ti contatta o arriva tramite il tuo link referral.</div></div>
+        <div style="background:var(--warm);border-radius:10px;padding:15px;"><div style="width:26px;height:26px;border-radius:50%;background:var(--surface-3);color:var(--text-dim);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-bottom:10px;">2</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Il progetto si chiude</div><div style="font-size:12px;color:var(--muted);">P2Finance finalizza il contratto. Lo stato del lead si aggiorna.</div></div>
+        <div style="background:var(--pink-glow);border:1px solid rgba(255,46,148,.2);border-radius:10px;padding:15px;"><div style="width:26px;height:26px;border-radius:50%;background:var(--grad-brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-bottom:10px;">3</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Ricevi il 10%</div><div style="font-size:12px;color:var(--muted);">Accredito entro 30 giorni. Minimo €100 per attivare il pagamento.</div></div>
       </div>
     </div>
     <div class="card"><div class="card-title"><span class="ci">📊</span>Dettaglio commissioni</div><div id="comm-list"></div></div>
@@ -380,12 +387,12 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
     <div class="page-title">Bandi <em>Attivi</em></div>
     <div class="page-sub">Aggiornato giugno 2026. Usa questi bandi per identificare opportunità per i tuoi clienti.</div>
     <div class="bandi-grid">
-      <div class="bando-card"><span class="bando-tag">🔴 URGENTE</span><div class="bando-name">ISI INAIL 2026</div><div class="bando-desc">Fondo perduto per sicurezza lavoro, macchinari, ammodernamento impianti. Funziona a click day.</div><div class="bando-footer"><span class="bando-amount">Fino a €130.000 FP</span><span class="bando-scad">⏰ Click day giugno</span></div></div>
-      <div class="bando-card"><span class="bando-tag">⚡ TOP</span><div class="bando-name">Transizione 5.0</div><div class="bando-desc">Credito d'imposta 5%–45% per investimenti in digitalizzazione con riduzione consumi energetici.</div><div class="bando-footer"><span class="bando-amount">5% – 45% credito</span><span class="bando-scad">📅 Aperto tutto 2026</span></div></div>
-      <div class="bando-card"><span class="bando-tag">🏭 MACCHINARI</span><div class="bando-name">Nuova Sabatini 2026</div><div class="bando-desc">Finanziamento agevolato per macchinari, attrezzature, software e hardware 4.0.</div><div class="bando-footer"><span class="bando-amount">20K – 4M€</span><span class="bando-scad">📅 Sportello continuo</span></div></div>
-      <div class="bando-card"><span class="bando-tag">🌍 EXPORT</span><div class="bando-name">SIMEST 2026</div><div class="bando-desc">Finanziamento agevolato per internazionalizzazione. Anche filiera esportatrice.</div><div class="bando-footer"><span class="bando-amount">Fino a €300.000</span><span class="bando-scad">📅 Sportello aperto</span></div></div>
-      <div class="bando-card"><span class="bando-tag">🌅 SUD ITALIA</span><div class="bando-name">ZES Unica Mezzogiorno</div><div class="bando-desc">Credito d'imposta fino al 60% per investimenti nelle regioni del Sud. Cumulabile.</div><div class="bando-footer"><span class="bando-amount">Fino al 60%</span><span class="bando-scad">📅 Aperto 2026</span></div></div>
-      <div class="bando-card"><span class="bando-tag">🔬 INNOVAZIONE</span><div class="bando-name">Fondo PMI EUIPO</div><div class="bando-desc">Voucher per brevetti, marchi e design europei e internazionali.</div><div class="bando-footer"><span class="bando-amount">Fino a €2.500</span><span class="bando-scad">⏰ Scad. 4 dic 2026</span></div></div>
+      <div class="bando-card"><span class="bando-tag tag-red">🔴 URGENTE</span><div class="bando-name">ISI INAIL 2026</div><div class="bando-desc">Fondo perduto per sicurezza lavoro, macchinari, ammodernamento impianti. Funziona a click day.</div><div class="bando-footer"><span class="bando-amount">Fino a €130.000 FP</span><span class="bando-scad">⏰ Click day giugno</span></div></div>
+      <div class="bando-card"><span class="bando-tag tag-gold">⚡ TOP</span><div class="bando-name">Transizione 5.0</div><div class="bando-desc">Credito d'imposta 5%–45% per investimenti in digitalizzazione con riduzione consumi energetici.</div><div class="bando-footer"><span class="bando-amount">5% – 45% credito</span><span class="bando-scad">📅 Aperto tutto 2026</span></div></div>
+      <div class="bando-card"><span class="bando-tag tag-purple">🏭 MACCHINARI</span><div class="bando-name">Nuova Sabatini 2026</div><div class="bando-desc">Finanziamento agevolato per macchinari, attrezzature, software e hardware 4.0.</div><div class="bando-footer"><span class="bando-amount">20K – 4M€</span><span class="bando-scad">📅 Sportello continuo</span></div></div>
+      <div class="bando-card"><span class="bando-tag tag-green">🌍 EXPORT</span><div class="bando-name">SIMEST 2026</div><div class="bando-desc">Finanziamento agevolato per internazionalizzazione. Anche filiera esportatrice.</div><div class="bando-footer"><span class="bando-amount">Fino a €300.000</span><span class="bando-scad">📅 Sportello aperto</span></div></div>
+      <div class="bando-card"><span class="bando-tag tag-gold">🌅 SUD ITALIA</span><div class="bando-name">ZES Unica Mezzogiorno</div><div class="bando-desc">Credito d'imposta fino al 60% per investimenti nelle regioni del Sud. Cumulabile.</div><div class="bando-footer"><span class="bando-amount">Fino al 60%</span><span class="bando-scad">📅 Aperto 2026</span></div></div>
+      <div class="bando-card"><span class="bando-tag tag-purple">🔬 INNOVAZIONE</span><div class="bando-name">Fondo PMI EUIPO</div><div class="bando-desc">Voucher per brevetti, marchi e design europei e internazionali.</div><div class="bando-footer"><span class="bando-amount">Fino a €2.500</span><span class="bando-scad">⏰ Scad. 4 dic 2026</span></div></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ci">💡</span>Script per trovare clienti</div>
@@ -411,7 +418,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
       <div class="card-title"><span class="ci">🌐</span>Risorse utili</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <a href="https://www.p2finance.it" target="_blank" style="display:flex;align-items:center;gap:14px;padding:13px 15px;background:var(--warm);border-radius:10px;text-decoration:none;color:var(--navy);border:1px solid transparent;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--mg)'" onmouseout="this.style.borderColor='transparent'">
-          <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,0,106,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🌐</div>
+          <div style="width:38px;height:38px;border-radius:9px;background:var(--pink-glow);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🌐</div>
           <div><div style="font-weight:600;font-size:14px;margin-bottom:2px;">Sito P2Finance</div><div style="font-size:12px;color:var(--muted);">www.p2finance.it</div></div>
           <div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--mg);">Apri →</div>
         </a>
