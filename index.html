@@ -102,6 +102,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
 /* NAV */
 .nav-tabs{display:flex;gap:2px;padding:8px 12px;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--surface);scrollbar-width:none}
 .nav-tabs::-webkit-scrollbar{display:none}
+.nav-icon{width:22px;height:22px;flex-shrink:0}
 .nav-tab{background:transparent;border:0;color:var(--text-dim);padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:6px;min-height:40px;position:relative;transition:color .15s,background .15s}
 .nav-tab:hover{color:var(--text);background:var(--surface-2)}
 .nav-tab.active{color:var(--pink)}
@@ -251,6 +252,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
   .nav-tab{flex:1;padding:8px 4px;font-size:10px;flex-direction:column;gap:3px;text-align:center;min-height:54px;border-radius:10px}
   .nav-tab.active{background:rgba(255,46,148,.08);color:var(--pink)}
   .nav-tab.active::after{display:none}
+  #app{padding-bottom:76px}
+  .nav-tab span{font-size:10px;font-weight:600}
+  .nav-icon{width:20px;height:20px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .f-input{font-size:16px}
 }
 @media(max-width:380px){
   .stat-strip{grid-template-columns:1fr}
@@ -335,12 +341,12 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
   </header>
 
   <div class="nav-tabs" id="nav-tabs">
-    <button class="nav-tab active" onclick="goTo('dashboard',this)">📊 Dashboard</button>
-    <button class="nav-tab" onclick="goTo('lead',this)">👥 I miei lead</button>
-    <button class="nav-tab" onclick="goTo('guadagni',this)">💰 Guadagni</button>
-    <button class="nav-tab" onclick="goTo('bandi',this)">📋 Bandi attivi</button>
-    <button class="nav-tab" onclick="goTo('tool',this)">🛠️ Tool & Guide</button>
-    <button class="nav-tab" id="admin-tab" style="display:none" onclick="goTo('admin',this)">⚙️ Admin</button>
+    <button class="nav-tab active" onclick="goTo('dashboard',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></button>
+    <button class="nav-tab" onclick="goTo('lead',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Lead</span></button>
+    <button class="nav-tab" onclick="goTo('guadagni',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg><span>Guadagni</span></button>
+    <button class="nav-tab" onclick="goTo('bandi',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg><span>Bandi</span></button>
+    <button class="nav-tab" onclick="goTo('tool',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>Guide</span></button>
+    <button class="nav-tab" id="admin-tab" style="display:none" onclick="goTo('admin',this)"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Admin</span></button>
   </div>
 
   <!-- DASHBOARD -->
