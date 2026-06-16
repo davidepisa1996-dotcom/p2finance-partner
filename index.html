@@ -263,7 +263,18 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdro
       <label class="f-label">Password</label>
       <input class="f-input" id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
       <button class="auth-btn" id="login-btn" onclick="doLogin()">Accedi</button>
+      <div style="text-align:center;margin-top:10px"><button onclick="showResetForm()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline">Hai dimenticato la password?</button></div>
       <div class="auth-msg" id="login-msg"></div>
+    </div>
+
+    <!-- RESET PASSWORD -->
+    <div id="reset-form" style="display:none">
+      <p style="font-size:14px;color:var(--text-dim);margin-bottom:16px;text-align:center">Inserisci la tua email e ti mandiamo un link per reimpostare la password.</p>
+      <label class="f-label">Email</label>
+      <input class="f-input" id="reset-email" type="email" placeholder="tuaemail@esempio.it" onkeydown="if(event.key==='Enter')doResetPassword()">
+      <button class="auth-btn" id="reset-btn" onclick="doResetPassword()" style="margin-top:8px">Invia link di reset</button>
+      <div class="auth-msg" id="reset-msg"></div>
+      <div style="text-align:center;margin-top:12px"><button onclick="showLoginForm()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline">← Torna al login</button></div>
     </div>
 
     <!-- REGISTER -->
@@ -519,6 +530,7 @@ function showApp() {
 function switchTab(tab) {
   document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('reg-form').style.display = tab === 'reg' ? 'block' : 'none';
+  document.getElementById('reset-form').style.display = 'none';
   document.getElementById('tab-login').classList.toggle('active', tab === 'login');
   document.getElementById('tab-reg').classList.toggle('active', tab === 'reg');
   if (tab === 'reg') document.getElementById('reg-extra').style.display = 'block';
@@ -537,7 +549,12 @@ async function doLogin() {
 
   const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
   if (error) {
-    showMsg(msg, 'Email o password non corretti.', 'error');
+    const errMsg = error.message?.toLowerCase() || '';
+    if (errMsg.includes('email not confirmed') || errMsg.includes('not confirmed')) {
+      showMsg(msg, 'Email non ancora confermata. Controlla la tua casella e clicca il link che ti abbiamo inviato.', 'error');
+    } else {
+      showMsg(msg, 'Email o password non corretti.', 'error');
+    }
     btn.disabled = false; btn.textContent = 'Accedi';
     return;
   }
@@ -578,8 +595,38 @@ async function doRegister() {
     await db.from('profiles').update({ telefono: tel, professione: prof }).eq('id', data.user.id);
   }
 
-  showMsg(msg, '✓ Richiesta inviata! Il team P2Finance ti contatterà entro 24 ore.', 'success');
+  showMsg(msg, '✓ Richiesta inviata! Controlla la tua email e clicca il link di conferma per attivare l\'account. Poi il team P2Finance approverà la tua richiesta entro 24 ore.', 'success');
   btn.disabled = false; btn.textContent = 'Invia richiesta';
+}
+
+// RESET PASSWORD
+function showResetForm() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('reset-form').style.display = 'block';
+  document.getElementById('reset-msg').textContent = '';
+}
+
+function showLoginForm() {
+  document.getElementById('reset-form').style.display = 'none';
+  document.getElementById('login-form').style.display = 'block';
+}
+
+async function doResetPassword() {
+  const email = document.getElementById('reset-email').value.trim();
+  const btn = document.getElementById('reset-btn');
+  const msg = document.getElementById('reset-msg');
+  if (!email) { showMsg(msg, 'Inserisci la tua email.', 'error'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span>Invio...';
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://partner.p2finance.it'
+  });
+  btn.disabled = false; btn.textContent = 'Invia link di reset';
+  if (error) {
+    showMsg(msg, 'Errore: ' + (error.message || 'riprova più tardi.'), 'error');
+  } else {
+    showMsg(msg, '✓ Email inviata! Controlla la tua casella e clicca il link per reimpostare la password.', 'success');
+  }
 }
 
 // LOGOUT
