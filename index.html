@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>P2Finance — Area Partner</title>
+<link rel="manifest" href='data:application/manifest+json,{"name":"P2Finance Partner","short_name":"P2Finance","description":"Area partner P2Finance","start_url":"/","display":"standalone","orientation":"portrait","background_color":"%23ffffff","theme_color":"%23ff2e94","lang":"it","icons":[{"src":"/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"/icon-512.png","sizes":"512x512","type":"image/png"}],"categories":["business","finance"]}'>
+<meta name="theme-color" content="#ff2e94">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="P2Finance">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -948,6 +953,12 @@ function showToast(msg) {
 
 // Start
 init();
+</script>
+<script>
+if('serviceWorker'in navigator){
+  const sw=new Blob(["const C='p2f-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['/'])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))));self.clients.claim();});self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||e.request.url.includes('supabase')||e.request.url.includes('googleapis'))return;e.respondWith(fetch(e.request).then(r=>{caches.open(C).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>caches.match(e.request)||caches.match('/')));});"],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(sw)).catch(()=>{});
+}
 </script>
 </body>
 </html>
